@@ -14,7 +14,7 @@ package Assignment1;
 * @author Dr Timothy C. Lethbridge
 * @version July 2000
 */
-public class PointCP3
+public class PointCP3 implements PointCP6
 {
 //Instance variables ************************************************
 
@@ -22,7 +22,7 @@ public class PointCP3
 * Contains C(artesian) or P(olar) to identify the type of
 * coordinates that are being dealt with.
 */
-private char typeCoord;
+
 
 /**
 * Contains the current value of X or RHO depending on the type
@@ -42,13 +42,12 @@ private double yOrTheta;
 /**
 * Constructs a coordinate object, with a type identifier.
 */
-public PointCP3(char type, double xOrRho, double yOrTheta)
+public PointCP3(double xOrRho, double yOrTheta)
 {
- if(type != 'C')
-   throw new IllegalArgumentException();
+ 
  this.xOrRho = xOrRho;
  this.yOrTheta = yOrTheta;
- typeCoord = type;
+ 
 }
 	
 
@@ -56,41 +55,54 @@ public PointCP3(char type, double xOrRho, double yOrTheta)
 
 
 public double getX()
-{
- if(typeCoord == 'C') 
+{ 
    return xOrRho;
- else 
-   return (Math.cos(Math.toRadians(yOrTheta)) * xOrRho);
+
 }
 
 public double getY()
 {
- if(typeCoord == 'C') 
    return yOrTheta;
- else 
-   return (Math.sin(Math.toRadians(yOrTheta)) * xOrRho);
 }
 
 public double getRho()
-{
- if(typeCoord == 'P') 
-   return (Math.sqrt(Math.pow(xOrRho, 2) + Math.pow(yOrTheta, 2)));
- else 
-   return 100;
+{ 
+	return (Math.sqrt(Math.pow(xOrRho, 2) + Math.pow(yOrTheta, 2)));
 }
 
 public double getTheta()
 {
- if(typeCoord == 'P')
-   return Math.toDegrees(Math.atan2(yOrTheta, xOrRho));
- else 
-   return 200;
+	return Math.toDegrees(Math.atan2(yOrTheta, xOrRho));
+	
 }
 
 	
 /**
 * Converts Cartesian coordinates to Polar coordinates.
 */
+public PointCP3 convertStorageToCartesian()
+{
+ 
+   //Calculate RHO and THETA
+   //double temp = getRho();
+   //yOrTheta = getTheta();
+   //xOrRho = temp;
+   
+   
+   return this;
+}
+	
+/**
+* Converts Polar coordinates to Cartesian coordinates.
+*/
+public PointCP2 convertStorageToPolar()
+{
+ 
+   //Calculate X and Y
+   PointCP6 p=new PointCP2(this.getRho(),this.getTheta());
+   
+   return (PointCP2)p;
+}
 
 /**
 * Calculates the distance in between two points using the Pythagorean
@@ -111,19 +123,6 @@ public double getDistance(PointCP pointB)
 }
 
 /**
-* Converts charcoordinates from Polar to Cartesian.
-*/
-public void convertTypeToCartesian() {
-	this.typeCoord='C';
-}
-/**
-* Converts charcoordinates from Cartesian to polar.
-*/
-public void convertTypeToPolar() {
-	this.typeCoord='P';
-}
-
-/**
 * Rotates the specified point by the specified number of degrees.
 * Not required until E2.30
 *
@@ -131,14 +130,14 @@ public void convertTypeToPolar() {
 * @param rotation The number of degrees to rotate the point.
 * @return The rotated image of the original point.
 */
-
-public PointCP rotatePoint(double rotation)
+/*
+public PointCP3 rotatePoint(double rotation)
 {
  double radRotation = Math.toRadians(rotation);
  double X = getX();
  double Y = getY();
      
- return new PointCP('C',
+ return new PointCP3('C',
    (Math.cos(radRotation) * X) - (Math.sin(radRotation) * Y),
    (Math.sin(radRotation) * X) + (Math.cos(radRotation) * Y));
 }
@@ -150,9 +149,13 @@ public PointCP rotatePoint(double rotation)
 */
 public String toString()
 {
- return (typeCoord == 'C' 
-    ? "stored as Cartesian  (" + this.xOrRho + "," + this.yOrTheta + ")"
-    : "print as Polar [" + getRho() + "," + getTheta() + "]") + "\n";
-}
+ return "Stored as Cartesian [" + this.xOrRho + "," +this.yOrTheta + "]"+ "\n";
 }
 
+
+
+public double getDistance() {
+	// TODO Auto-generated method stub
+	return 0;
+}
+}

@@ -1,6 +1,10 @@
 package Assignment1;
 
-import java.io.IOException;
+//This file contains material supporting section 2.9 of the textbook:
+//"Object Oriented Software Engineering" and is issued under the open-source
+//license found at www.lloseng.com 
+
+import java.io.*;
 
 /**
 * This class prompts the user for a set of coordinates, and then 
@@ -11,15 +15,15 @@ import java.io.IOException;
 * @author Paul Holden
 * @version July 2000
 */
-public class PointCPTest2
+public class PointCPTest
 {
 //Class methods *****************************************************
 
 /**
-* This method is responsible for the creation of the PointCP2
+* This method is responsible for the creation of the PointCP
 * object.  This can be done in two ways; the first, by using the
 * command line and running the program using <code> java 
-* PointCP2Test2 &lt;coordtype (c/p)&gt; &lt;X/RHO&gt; &lt;Y/THETA&gt;
+* PointCPTest &lt;coordtype (c/p)&gt; &lt;X/RHO&gt; &lt;Y/THETA&gt;
 * </code> and the second by getting the program to prompt the user.
 * If the user does not enter a valid sequence at the command line,
 * the program will prompte him or her.
@@ -31,16 +35,16 @@ public class PointCPTest2
 */
 public static void main(String[] args)
 {
- PointCP2 point;
+ PointCP point;
 
  System.out.println("Cartesian-Polar Coordinates Conversion Program");
 
  // Check if the user input coordinates from the command line
- // If he did, create the PointCP2 object from these arguments.
+ // If he did, create the PointCP object from these arguments.
  // If he did not, prompt the user for them.
  try
  {
-   point = new PointCP2(args[0].toUpperCase().charAt(0), 
+   point = new PointCP(args[0].toUpperCase().charAt(0), 
      Double.valueOf(args[1]).doubleValue(), 
      Double.valueOf(args[2]).doubleValue());
  }
@@ -62,23 +66,23 @@ public static void main(String[] args)
    }
  }
  System.out.println("\nYou entered:\n" + point);
- point.convertTypeToCartesian();
- System.out.println("\nprint as Cartesian:\n" + point);
- point.convertTypeToPolar();
+ point.convertStorageToCartesian();
+ System.out.println("\nAfter asking to store as Cartesian:\n" + point);
+ point.convertStorageToPolar();
  System.out.println("\nAfter asking to store as Polar:\n" + point);
 }
 
 /**
 * This method obtains input from the user and verifies that
-* it is valid.  When the input is valid, it returns a PointCP2
+* it is valid.  When the input is valid, it returns a PointCP
 * object.
 *
-* @return A PointCP2 constructed using information obtained 
+* @return A PointCP constructed using information obtained 
 *         from the user.
 * @throws IOException If there is an error getting input from
 *         the user.
 */
-private static PointCP2 getInput() throws IOException
+private static PointCP getInput() throws IOException
 {
  byte[] buffer = new byte[1024];  //Buffer to hold byte input
  boolean isOK = false;  // Flag set if input correct
@@ -99,12 +103,14 @@ private static PointCP2 getInput() throws IOException
      // Prompt the user
      if (i == 0) // First argument - type of coordinates
      {
-       System.out.print("you can only input polar coordinates here. Please type P to comfirm : ");
+       System.out.print("Enter the type of Coordinates you are inputting ((C)artesian / (P)olar): ");
      }
      else // Second and third arguments
      {
        System.out.print("Enter the value of " 
-         + ((i == 1 ? "Rho " : "Theta ")) 
+         + (coordType == 'C' 
+           ? (i == 1 ? "X " : "Y ")
+           : (i == 1 ? "Rho " : "Theta ")) 
          + "using a decimal point(.): ");
      }
 
@@ -122,7 +128,8 @@ private static PointCP2 getInput() throws IOException
      {
        if (i == 0) // First argument -- type of coordinates
        {
-         if (! (theInput.toUpperCase().charAt(0) == 'P'))
+         if (!((theInput.toUpperCase().charAt(0) == 'C') 
+           || (theInput.toUpperCase().charAt(0) == 'P')))
          {
            //Invalid input, reset flag so user is prompted again
            isOK = false;
@@ -151,8 +158,7 @@ private static PointCP2 getInput() throws IOException
    //Reset flag so while loop will prompt for other arguments
    isOK = false;
  }
- //Return a new PointCP2 object
- return (new PointCP2(coordType, a, b));
+ //Return a new PointCP object
+ return (new PointCP(coordType, a, b));
 }
 }
-
