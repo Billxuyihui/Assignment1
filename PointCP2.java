@@ -130,14 +130,14 @@ public double getDistance(PointCP pointB)
 * @param rotation The number of degrees to rotate the point.
 * @return The rotated image of the original point.
 */
-/*
+
 public PointCP2 rotatePoint(double rotation)
 {
  double radRotation = Math.toRadians(rotation);
  double X = getX();
  double Y = getY();
      
- return new PointCP2('C',
+ return new PointCP2(
    (Math.cos(radRotation) * X) - (Math.sin(radRotation) * Y),
    (Math.sin(radRotation) * X) + (Math.cos(radRotation) * Y));
 }
